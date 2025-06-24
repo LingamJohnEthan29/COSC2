@@ -1,21 +1,28 @@
 import argparse
 
-parser = argparse.ArgumentParser(description="A simple addition program")
+def celsius_to_fahrenheit(celsius):
+    return (celsius * 9/5) + 32
 
-parser.add_argument("toCel", nargs = "*", metavar = "str",type= str ,help="C: To Celsius, F:To Fahrenheit")
-parser.add_argument("temp", nargs="*", metavar="num", type=int, help="Temp to convert")
-###Pass the argument for example if you want to convert 32 F to Celsius then type in cmd python convertor.py C 32
+def fahrenheit_to_celsius(fahrenheit):
+    return (fahrenheit - 32) * 5/9
 
+def main():
+    parser = argparse.ArgumentParser(description="Convert temperature between Celsius and Fahrenheit.")
 
-args = parser.parse_args()
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--c2f", type=float, metavar="C",
+                       help="Convert Celsius to Fahrenheit")
+    group.add_argument("--f2c", type=float, metavar="F",
+                       help="Convert Fahrenheit to Celsius")
 
-toCon = args.toCel
-#toCon returns a list of arguments in string
-if(len(toCon)!=0):
-    temp = int(toCon[1])
-    if toCon[0] == "C":
-        Cel = ((temp-32)*0.55)
-        print("The temperature in Cesius is",Cel)
-    else:
-        Fah = (temp*0.555) + 32
-        print("The temperature in Fahrenheit is",Fah)
+    args = parser.parse_args()
+
+    if args.c2f is not None:
+        result = celsius_to_fahrenheit(args.c2f)
+        print(f"{args.c2f}°C = {result:.2f}°F")
+    elif args.f2c is not None:
+        result = fahrenheit_to_celsius(args.f2c)
+        print(f"{args.f2c}°F = {result:.2f}°C")
+
+if __name__ == "__main__":
+    main()
